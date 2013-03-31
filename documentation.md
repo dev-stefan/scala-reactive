@@ -47,8 +47,10 @@ Prior to macro expansion:
 ```scala
 val myVar = new Var(123)
 val mySignal = Signal { myVar() + 5 }
+```
 
 After macro expansion:
+```scala
 val myVar = new Var(123)
 val mySignal = {
   var tmpSignal = new Signal(() => { myVar() + 5 })
