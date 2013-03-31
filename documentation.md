@@ -17,24 +17,26 @@ A Var is a variable which can be changed during runtime and all dependent signal
 In order to change the value of a Var use the "is" method.
 
 Example:
+```scala
 val myVar = new Var(123)
 myVar.setName("this is myVar")
 ...
 myVar is 321 // change value to 321
-
+```
 
 Signal
 --------------
 A Signal acts as an observer for the calculations used in the body of a Signal. If the value of a Var that has been used in the declaration of the Signal changes the Signal's value will be recomputed. Signals are rewritten at compile time by through the macro we developed.
 
 Example:
+```scala
 val myVar = new Var(123)
 myVar.setName("this is myVar")
 
 val mySignal = Signal { println("myVar changed the value"); myVar() }
 
 myVar is 321 // change value to 321, the Signal mySignal will be recomputed
-
+```
 
 Internals
 --------------
@@ -42,6 +44,7 @@ At the core of our work is an object called "Dependencies" that manages the conn
 To establish these dependencies at runtime our macro will expand Signal definitions at compile time as follows:
 
 Prior to macro expansion:
+```scala
 val myVar = new Var(123)
 val mySignal = Signal { myVar() + 5 }
 
@@ -51,7 +54,7 @@ val mySignal = {
   var tmpSignal = new Signal(() => { myVar() + 5 })
 	Dependencies.add(myVar, tmpSignal)
 	tmpSignal }
-
+```
 
 Notes
 --------------
